@@ -1,0 +1,65 @@
+[main (root-commit) e11f208] docs: записать режим работы прачечной
+ 1 file changed, 1 insertion(+)
+ create mode 100644 rules.txt
+Switched to a new branch 'develop'
+Switched to a new branch 'feature/booking-rules'
+[feature/booking-rules 1c35841] feat: добавить правило проверки пересечений
+ 1 file changed, 1 insertion(+)
+Switched to branch 'develop'
+Merge made by the 'ort' strategy.
+ rules.txt | 1 +
+ 1 file changed, 1 insertion(+)
+Switched to a new branch 'release/1.0.0'
+[release/1.0.0 cf04f11] release: подготовить версию 1.0.0
+ 1 file changed, 1 insertion(+)
+ create mode 100644 VERSION
+Switched to branch 'main'
+Merge made by the 'ort' strategy.
+ VERSION   | 1 +
+ rules.txt | 1 +
+ 2 files changed, 2 insertions(+)
+ create mode 100644 VERSION
+Switched to branch 'develop'
+Merge made by the 'ort' strategy.
+ VERSION | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 VERSION
+Switched to branch 'main'
+Switched to a new branch 'hotfix/1.0.1'
+[hotfix/1.0.1 92a14b4] fix: уточнить правило для соседних интервалов
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+Switched to branch 'main'
+Merge made by the 'ort' strategy.
+ VERSION   | 2 +-
+ rules.txt | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+Switched to branch 'develop'
+Merge made by the 'ort' strategy.
+ VERSION   | 2 +-
+ rules.txt | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+*   5ff3032 (HEAD -> develop) Merge hotfix/1.0.1 into develop
+|\  
+* \   0935957 Merge release/1.0.0 into develop
+|\ \  
+| | | *   903c0b7 (tag: v1.0.1, main) Merge hotfix/1.0.1 into main
+| | | |\  
+| | | |/  
+| | |/|   
+| | * | 92a14b4 (hotfix/1.0.1) fix: уточнить правило для соседних интервалов
+| | |/  
+| | *   8b9f74f (tag: v1.0.0) Merge release/1.0.0 into main
+| | |\  
+| | |/  
+| |/|   
+| * | cf04f11 (release/1.0.0) release: подготовить версию 1.0.0
+|/ /  
+* |   2fbedea Merge feature/booking-rules into develop
+|\ \  
+| |/  
+|/|   
+| * 1c35841 (feature/booking-rules) feat: добавить правило проверки пересечений
+|/  
+* e11f208 docs: записать режим работы прачечной
+v1.0.0
+v1.0.1
