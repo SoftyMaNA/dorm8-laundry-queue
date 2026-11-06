@@ -1,5 +1,11 @@
 <?php
 declare(strict_types=1);
+ini_set('session.use_strict_mode', '1');
+session_set_cookie_params([
+    'httponly' => true,
+    'samesite' => 'Lax',
+    'secure' => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
+]);
 session_start();
 require dirname(__DIR__) . '/src/bootstrap.php';
 
