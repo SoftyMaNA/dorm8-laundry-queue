@@ -1,0 +1,61 @@
+name: Проверка бронирования
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  booking:
+    name: Четыре теста PHP и MySQL
+    runs-on: ubuntu-24.04
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: test_password
+          MYSQL_DATABASE: laundry_queue_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -ptest_password"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+    env:
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_DATABASE: laundry_queue_test
+      DB_USERNAME: root
+      DB_PASSWORD: test_password
+    steps:
+      - uses: actions/checkout@v4
+      - name: Подготовить PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo_mysql
+          coverage: none
+      - name: Проверить синтаксис
+        run: find src public bin tests -name '*.php' -print0 | xargs -0 -n1 php -l
+      - name: 'Тест 1 - свободное время'
+        run: php tests/run.php 1
+      - name: 'Тест 2 - пересечение интервалов'
+        if: ${{ !cancelled() }}
+        run: php tests/run.php 2
+      - name: 'Тест 3 - обслуживание машины'
+        if: ${{ !cancelled() }}
+        run: php tests/run.php 3
+      - name: 'Тест 4 - отмена бронирования'
+        if: ${{ !cancelled() }}
+        run: php tests/run.php 4
+      - name: Сохранить отчёты JUnit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: booking-test-results
+          path: var/results-*.xml
+          if-no-files-found: warn
