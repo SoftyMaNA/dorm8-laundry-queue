@@ -1,0 +1,50 @@
+name: Windows installer
+on:
+  push:
+    paths:
+      - 'packaging/windows/**'
+      - '.github/workflows/windows-installer.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build-and-test:
+    runs-on: windows-2022
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install build tools
+        shell: pwsh
+        run: |
+          choco install innosetup -y --no-progress
+          npm install --no-save playwright@1.56.1
+          npx playwright install chromium
+      - name: Build offline installer with Inno Setup
+        shell: pwsh
+        run: ./packaging/windows/build.ps1
+      - name: Test installed application on Windows
+        shell: pwsh
+        run: ./packaging/windows/test-installed.ps1
+      - name: Save installer and evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: LaundryQueue-Windows-x64
+          path: |
+            dist/*
+            installer-evidence/*
+          retention-days: 30
+      - name: Publish tested installer on GitHub
+        if: github.ref == 'refs/heads/main'
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = 'v1.1.0-windows'
+          gh release view $tag *> $null
+          if ($LASTEXITCODE -ne 0) {
+            gh release create $tag --target $env:GITHUB_SHA --title 'Электронная очередь - установщик Windows x64' --notes 'Автономный установщик для Windows 10/11 x64. В комплекте приложение, PHP, MySQL и необходимые компоненты. Автоматические проверки установки и работы выполнены на Windows Server 2022. Ручная проверка Windows 10/11 отдельно не выполнена. Пользовательские данные сохраняются при переустановке и удалении.'
+            if ($LASTEXITCODE -ne 0) { throw 'Release creation failed.' }
+          }
+          gh release upload $tag dist/* installer-evidence/verification.json installer-evidence/01-installer-wizard.png installer-evidence/02-installed-application.png installer-evidence/booking-tests.txt --clobber
+          if ($LASTEXITCODE -ne 0) { throw 'Release asset upload failed.' }

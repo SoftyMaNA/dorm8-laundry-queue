@@ -2,3 +2,10 @@
 /vendor/
 /var/
 *.log
+/packaging/windows/cache/
+/packaging/windows/stage/
+/dist/
+/installer-evidence/
+/node_modules/
+/package-lock.json
+/package.json
